@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Unbounded:wght@200..900&display=swap');
+
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.h1 {
+    font-size: clamp(3.5rem, 2.5458rem + 3.0534vw, 4.5rem);
+    font-family: "Figtree", serif;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.h2 {
+    font-size: clamp(2.5rem, 2.0229rem + 1.5267vw, 3rem);
+    font-family: "Figtree", serif;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.h3 {
+    font-size: clamp(1.5rem, 1.0229rem + 1.5267vw, 2rem);
+    font-family: "Figtree", serif;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.h4 {
+    font-size: clamp(1.25rem, 1.0115rem + 0.7634vw, 1.5rem);
+    font-family: "Figtree", serif;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+p, a, button, input, textarea, select {
+    font-size: clamp(1rem, 0.8807rem + 0.3817vw, 1.125rem);
+    font-family: "Figtree", serif;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+small {
+    font-size: clamp(0.625rem, 0.5057rem + 0.3817vw, 0.75rem);
+    font-family: "Figtree", serif;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+button, a {
+    cursor: pointer;
+}
+
+i {
+    line-height: 0;
+}
+
+.button {
+    padding: 0.8rem 1.6rem;
+    border-radius: 1.6rem;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    width: fit-content;
+}
+
+.button>svg, .button>i {
+    transition: all 0.3s;
+    color: inherit;
+    font-size: inherit;
+}
+
+.button:hover>svg, .button:hover>i {
+    transform: rotate(-45deg);
+}
+
+.button-icon {
+    padding: 0.8rem;
+}
+
+.button-full {
+    border: 1px solid #09090B;
+    background-color: #09090B;
+    color: #E4E4E7;
+}
+
+.button-full:hover {
+    background-color: #09090B20;
+    color: #09090B;
+}
+
+.button-ghost {
+    border: 1px solid transparent;
+}
+
+.button-ghost:hover {
+    background-color: #E4E4E7;
+}
+
+.button-outline {
+    border: 1px solid #E4E4E7;
+}
+
+.button-outline:hover {
+    background-color: #E4E4E7;
+}
