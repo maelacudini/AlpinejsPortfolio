@@ -1,31 +1,15 @@
-// TAILWIND DARK MODE
-// TODO: USE https://alpinejs.dev/directives/on @click, also find a way to set the icon with x-if or something like that
-const themeSwitch = document.getElementById('theme-switch')
-
-function setTheme() {
-    if (document.documentElement.classList.contains('dark')) {
-        themeSwitch.innerHTML = `<i class="bi bi-moon"></i>`;
-        document.documentElement.classList.remove('dark')
-    } else {
-        themeSwitch.innerHTML = `<i class="bi bi-brightness-low"></i>`;
-        document.documentElement.classList.add('dark');
-    }
-}
-
-
-// LENIS SMOOTH SCROLL
+// LENIS
 const initLenis = () => {
-    const lenis = new Lenis({
-        content: document.getElementById('body'),
-        lerp: 0.1,
-        smoothWheel: true,
-    })
+    // Initialize Lenis
+    const lenis = new Lenis();
 
+    // Use requestAnimationFrame to continuously update the scroll
     function raf(time) {
-        lenis.raf(time)
-        requestAnimationFrame(raf)
+    lenis.raf(time);
+    requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf)
+
+    requestAnimationFrame(raf);
 }
 
 initLenis()
@@ -33,17 +17,6 @@ initLenis()
 
 // TEXT OPACITY ON SCROLL
 const paragraph = document.getElementById('paragraph')
-
-function splitText() {
-    const text = "I'm a Front End developer based in Berlin, Germany. Let's build your future together."
-
-    text.split('').forEach(letter => {
-        const span = document.createElement('span');
-        span.textContent = letter;
-        span.classList.add('letter');
-        paragraph.appendChild(span);
-    });
-}
 
 function reduceLettersOpacity() {
     const letters = document.querySelectorAll('#paragraph .letter');
@@ -60,61 +33,57 @@ function reduceLettersOpacity() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    splitText();
-});
-
-document.addEventListener('scroll', () => {
-    reduceLettersOpacity();
-});
-
-// FETCH DATA
-async function fetchData(url) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-        }
-
-        const json = await response.json();
-        return json.data;
-    } catch (error) {
-        console.error(error.message);
-    }
-}
 
 //ALPINE.JS
 document.addEventListener('alpine:init', () => {
+    const toggleable = () => ({
+        state: false,
+        toggle() {
+            this.state = !this.state;
+        },
+    });
+
+    Alpine.data('show', () => toggleable());
+
     Alpine.store('data', {
         links: links,
-        selectedYear: new Date().getFullYear(),
-        selectYear(year) {
-            this.selectedYear = year
-        },
-        years: years,
-        projects: projects,
         services: services,
-        socials: socials
+        socials: socials,
     });
-    Alpine.data('show', () => ({
-        show: false,
 
-        toggleShow() {
-            this.show = !this.show
-        },
-    }));
-    Alpine.data('lazyLoad', () => ({
-        load: false,
+    Alpine.data('projects', () => ({
+        isLoading: true,
+        allRepos: undefined,
+        filteredRepos: undefined,
+        fallbackRepos: latestWork,
+        years: [],
+        selectedYear: undefined,
+        avatar: undefined,
 
-        lazyLoad() {
-            this.load = !this.load
+        getData(url) {
+            this.isLoading = true;
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    this.allRepos = data;
+                    this.avatar = data[0].owner.avatar_url;
+                    this.years = [...new Set(data.map(repo => new Date(repo.created_at).getFullYear()))].sort((a, b) => b - a);
+                    this.selectedYear = this.years[0];
+                    this.filteredRepos = this.allRepos.filter(repo => new Date(repo.created_at).getFullYear() === this.selectedYear);
+                })
+                .catch((error) => {
+                    // console.error('Error fetching data:', error);
+                }).finally(() => {
+                    this.isLoading = false;
+                });
         },
-    }));
-    Alpine.data('expanded', () => ({
-        expanded: false,
 
-        toggleExpanded() {
-            this.expanded = !this.expanded
+        setSelectedYear(year) {
+            this.selectedYear = year;
         },
+
+        filterRepos(year) {
+            this.filteredRepos = this.allRepos.filter(repo => new Date(repo.created_at).getFullYear() === year);
+        }
     }));
 })

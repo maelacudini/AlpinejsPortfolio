@@ -2,69 +2,145 @@
 <html lang="en">
 
 <head>
+    <title> Alpine.js Portfolio </title>
+
+    <!-- META TAGS -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Front End Dev">
-    <title>Alpine.js Portfolio</title>
+    <meta name="description" content="I'm a Front End developer based in Berlin, Germany. Let's build your future together.">
+    <meta name="keywords" content="frontend, developer">
+    <meta name="subject" content="Personal Portfolio">
+    <meta name="language" content="en_GB">
+    <meta name="robots" content="index,follow">
+    <meta name="topic" content="">
+    <meta name="summary" content="">
+    <meta name="url" content="https://www.websiteaddress.com">
+    <meta property="og:title" content="Alpine.js Portfolio" />
+    <meta property="og:description" content="I'm a Front End developer based in Berlin, Germany. Let's build your future together." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.websiteaddress.com" />
+    <meta property="og:image" content="https://www.websiteaddress.com/image.png" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Alpine.js Portfolio">
+    <meta name="twitter:description" content="I'm a Front End developer based in Berlin, Germany. Let's build your future together.">
+    <meta name="twitter:image" content="https://www.websiteaddress.com/image.png">
+    <link rel="shortcut icon" href="./icon.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
-    <!-- BOOTSTRAP -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <!-- LENIS - SMOOTH SCROLL -->
-    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.20/dist/lenis.css">
-    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
-    <!-- TAILWIND -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-        }
-    </script>
-    <!-- ALPINE.JS -->
+    
+    <!-- ALPINE.JS PLUGINS AND CORE -->
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- LENIS -->
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.2.3/dist/lenis.css">
+    <!-- TAILWIND -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;500&display=swap">
+    <!-- BOOTSTRAP ICONS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 </head>
 
-<body id="body" class="flex flex-col items-center justify-center gap-24 bg-zinc-50 dark:bg-zinc-950">
-
-    <!-- DARK MODE -->
-    <div x-data class="fixed z-[99] bottom-8 right-8 left-8 flex items-center justify-center">
-        <button @click="setTheme" aria-label="theme switch" id="theme-switch"
-            class="button button-full button-icon dark:invert">
-            <i class="bi bi-moon"></i>
-        </button>
-    </div>
+<body
+    id="body"
+    class="flex flex-col items-center justify-center gap-24 bg-zinc-100 text-zinc-900"
+>
 
     <!-- HEADER & NAVBAR -->
-    <header class="w-full max-w-6xl p-8 relative flex items-baseline justify-between gap-8">
+    <header
+        class="w-full max-w-6xl p-8 relative flex items-baseline justify-between gap-8"
+    >
         <div class="flex items-center gap-2">
-            <p class="h4 dark:invert">Hey!</p>
-            <p class="h4 cursor-pointer hover:-rotate-45 transition duration-400">🖖🏼</p>
+            <p class="font-xl">
+                Hey!
+            </p>
+            <p
+                class="font-xl cursor-pointer hover:-rotate-45 transition duration-400">
+                🖖🏼
+            </p>
         </div>
-        <div x-data="show" class="block sm:hidden">
-            <button @click="toggleShow" class="button button-outline dark:invert">Menu</button>
-            <nav x-show="show" x-transition.opacity x-transition.duration.400ms
-                class="absolute right-8 top-24 sm:hidden bg-black rounded-3xl p-8 dark:invert">
-                <div class="flex flex-col flex-col gap-4">
-                    <template x-for="link in $store.data.links">
-                        <div class="group flex justify-between items-center gap-8 w-full">
-                            <a @click="toggleShow" class="h2 text-white" :href="link.href">
-                                <span x-text="link.label"></span>
-                                <div class="w-0 group-hover:w-full transition-all duration-400 border-b-2 border-white">
-                                </div>
-                            </a>
-                            <i
-                                class="bi bi-arrow-right-short h2 text-white group-hover:rotate-45 transition duration-400"></i>
+        <div
+            x-data="show"
+            class="block sm:hidden"
+        >
+            <div class="group w-fit ">
+                <button @click="toggle">Menu</button>
+                <div
+                    class="w-0 group-hover:w-full border-b border-zinc-900 transition-all duration-400">
+                </div>
+            </div>
+            <nav
+                x-show="state"
+                x-transition:enter-start="translate-x-full"
+                x-transition:enter-end="translate-x-none"
+                x-transition:leave="delay-600"
+                x-transition:leave-start="translate-x-none"
+                x-transition:leave-end="translate-x-full"
+                class="fixed sm:hidden inset-0 z-[99] flex flex-col justify-between bg-zinc-100 p-8 transition-all duration-400"
+            >
+                <div class="w-full flex justify-end">
+                    <button
+                        @click="toggle"
+                        aria-label="close menu"
+                    >
+                        <i class="font-xl bi bi-x"></i>
+                    </button>
+                </div>
+                <div class="flex flex-col flex-col gap-4 h-80">
+                    <template x-for="(link, index) in $store.data.links">
+                        <div
+                            class="group space-y-2 w-fit transition-all duration-400"
+                            x-show="state"
+                            x-transition:enter-start="opacity-0 translate-x-4"
+                            x-transition:enter-end="opacity-100 translate-x-none translate-y-none"
+                            x-transition:leave-start="opacity-100 translate-x-none translate-y-none"
+                            x-transition:leave-end="opacity-0 translate-x-4"
+                            :style="{
+                                transitionDelay: (state ? (($store.data.links.length - 1 - index) * 100 + 200) : (($store.data.links.length - 1 - index) * 100)) + 'ms'
+                            }"
+                        >
+                            <a
+                                x-text="link.label"
+                                @click="toggle"
+                                class="font-3xl"
+                                :href="link.href"
+                            ></a>
+                            <div
+                                class="w-0 group-hover:w-full transition-all duration-400 border-b-2 border-zinc-900">
+                            </div>
                         </div>
+                    </template>
+                </div>
+                <div class="flex gap-2">
+                    <template x-for="social in $store.data.socials">
+                        <a
+                            :href="social.href"
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            class="button button-outline button-icon"
+                            :aria-label="social.label"
+                        >
+                            <i :class="social.icon"></i>
+                        </a>
                     </template>
                 </div>
             </nav>
         </div>
-        <nav x-data class="hidden sm:flex items-baseline justify-between gap-4">
+        <nav
+            x-data
+            class="hidden sm:flex items-baseline justify-between gap-4"
+        >
             <template x-for="link in $store.data.links">
-                <div class="group w-fit dark:invert">
-                    <a x-text="link.label" :href="link.href"></a>
-                    <div class="w-0 group-hover:w-full transition-all duration-400 border-b border-black"></div>
+                <div class="group w-fit ">
+                    <a
+                        x-text="link.label"
+                        :href="link.href"
+                    ></a>
+                    <div
+                        class="w-0 group-hover:w-full transition-all duration-400 border-b border-zinc-900">
+                    </div>
                 </div>
             </template>
         </nav>
@@ -75,77 +151,214 @@
 
         <!-- INTRO -->
         <div class="flex flex-col gap-24">
-            <p class="text-zinc-500 uppercase font-medium!">Front End Developer</p>
-            <h1 class="h1 dark:invert" id="paragraph">
-                <!-- THIS PARAGRAPH IS SET INSIDE ./script.js, SEE 'TEXT OPACITY ON SCROLL' -->
+            <p class="text-zinc-600! uppercase">
+                Front End Developer
+            </p>
+            <h1
+                x-data="{ addEffect: false, text: 'I\'m a Developer based in Berlin, Germany. Let\'s build your future together.' }"
+                @scroll.window="addEffect && reduceLettersOpacity"
+                x-intersect:enter="addEffect = true"
+                x-intersect:leave="addEffect = false"
+                id="paragraph"
+                class="font-4xl"
+            >
+                <template
+                    x-for="(letter, index) in text.split('')"
+                    :key="letter + index"
+                >
+                    <span
+                        x-text="letter"
+                        class="letter"
+                    ></span>
+                </template>
             </h1>
-            <a href="mailto:" class="button button-full dark:invert">
+            <a
+                href="mailto:"
+                rel="noopener nofollow noreferrer"
+                target="_blank"
+                class="button button-full "
+            >
                 hello@dev.com
                 <i class="bi bi-arrow-right-short"></i>
             </a>
         </div>
 
-        <!-- PROJECT GALLERY -->
-        <div id="work" class="space-y-8">
-            <div x-data="show" class="flex flex-wrap items-center justify-between gap-8">
-                <p class="uppercase text-zinc-500 font-medium!">My Latest Projects</p>
-                <button @click="toggleShow" class="button button-outline dark:invert">
-                    <span x-text="$store.data.selectedYear"></span>
-                    <i class="bi bi-calendar"></i>
-                </button>
-                <div x-show="show" x-transition.opacity x-transition.duration.400ms
-                    class="fixed inset-0 z-[99] flex items-center justify-center">
-                    <div @click="toggleShow"
-                        class="absolute inset-0 backdrop-blur-sm bg-zinc-950/80 transition-all duration-400">
-                    </div>
-                    <div data-lenis-prevent
-                        class="relative max-h-48 overflow-scroll flex flex-col items-center gap-4 border border-zinc-200 bg-white rounded-3xl p-8 transition-all duration-400 dark:invert">
-                        <template x-for="(year, index) in years" :key="year + index">
-                            <p x-text="year" @click="$store.data.selectYear(year), toggleShow()" class="cursor-pointer">
-                            </p>
-                        </template>
+
+        <!-- PROJECTS / GITHUB REPOS -->
+        <div
+            x-data="projects"
+            x-init="$nextTick(() => { getData('https://api.github.com/users/oracle/repos') })"
+            id="work"
+            class="space-y-8"
+        >
+            <div class="flex justify-between items-center">
+                <p class="uppercase text-zinc-600!">My Work</p>
+                <div
+                    x-data="show"
+                    x-show="!!filteredRepos"
+                    class="relative flex flex-col gap-2"
+                >
+                    <button
+                        @click="toggle"
+                        type="button"
+                        class="button button-outline"
+                        aria-label="select year menu"
+                    >
+                        <span x-text="selectedYear"></span>
+                        <i class="bi bi-calendar"></i>
+                    </button>
+
+                    <div
+                        data-lenis-prevent
+                        x-show="state"
+                        x-transition:enter-start="translate-x-full opacity-0"
+                        x-transition:enter-end="translate-x-none opacity-100"
+                        x-transition:leave-start="translate-x-none opacity-100"
+                        x-transition:leave-end="translate-x-full opacity-0"
+                        class="absolute top-full right-0 z-[99] mt-4 border border-zinc-900 bg-zinc-100 p-8 rounded-3xl transition-all duration-400"
+                    >
+                        <div class="max-h-40 overflow-y-scroll space-y-2">
+                            <template
+                                x-for="year in years"
+                                :key="year"
+                            >
+                                <div class="flex items-top gap-2">
+                                    <div class="group w-fit">
+                                        <button
+                                            x-text="year"
+                                            @click="filterRepos(year), setSelectedYear(year), toggle()"
+                                            :class="year === selectedYear ? 'text-zinc-600! font-xl' : 'font-xl'"
+                                        ></button>
+                                        <div
+                                            class="w-0 group-hover:w-full transition-all duration-400 border-b"
+                                            :class="year === selectedYear ? 'border-zinc-500' : 'border-zinc-900'"
+                                        >
+                                        </div>
+                                    </div>
+                                    <small
+                                        x-text="allRepos.filter(repo => new Date(repo.created_at).getFullYear() === year).length"
+                                    ></small>
+                                </div>
+                            </template>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div x-data class="flex flex-wrap gap-8">
-                <template x-for="(project, index) in $store.data.projects[$store.data.selectedYear]"
-                    :key="project.title + index">
-                    <div x-data="show" @mouseenter="toggleShow" @mouseleave="toggleShow"
-                        class="relative group h-full basis-md shrink grow space-y-4">
-                        <div x-data="lazyLoad" x-intersect.once="lazyLoad"
-                            class="relative w-full h-80 bg-zinc-200 rounded-xl overflow-hidden">
-                            <img x-show="load" x-transition.opacity x-transition.duration.400ms :alt="project.title"
-                                :src="project.media"
-                                class="object-center object-cover w-full h-full transition-all duration-400 group-hover:scale-125 group-hover:blur-sm"
-                                loading="lazy">
-                            <div x-show="show" x-transition.opacity x-transition.duration.400ms
-                                class="absolute inset-0 flex items-center justify-center">
-                                <a href="/" class="button button-full dark:invert">Check it out</a>
+
+            <!-- LOADING -->
+            <template x-if="isLoading">
+                <div class="h-[50lvh] flex items-center justify-center">
+                    <p>Loading...</p>
+                </div>
+            </template>
+
+            <!-- REPOS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+
+                <!-- REPOS WITH FALLBACK -->
+                <template x-if="!isLoading">
+                    <template
+                        x-for="repo in (filteredRepos ? filteredRepos : fallbackRepos)"
+                        :key="repo.id"
+                    >
+                        <div
+                            class="flex flex-col justify-between gap-16 w-full h-full bg-zinc-900 rounded-3xl p-8">
+                            <div
+                                class="flex justify-between items-center gap-8">
+                                <p
+                                    x-text="repo.name"
+                                    class="font-xl break-words text-zinc-100"
+                                ></p>
+                                <a
+                                    :href="repo.html_url"
+                                    target="_blank"
+                                    rel="noopener nofollow noreferrer"
+                                    class="button button-outline button-icon invert"
+                                    aria-label="Check out the repo"
+                                >
+                                    <i class="bi bi-arrow-right-short"></i>
+                                </a>
+                            </div>
+                            <div class="space-y-4">
+                                <p
+                                    data-lenis-prevent
+                                    x-text="repo.description"
+                                    class="text-zinc-100"
+                                >
+                                </p>
+                                <div
+                                    class="flex flex-nowrap overflow-x-scroll gap-1">
+                                    <template
+                                        x-for="topic in repo.topics"
+                                        :key="topic"
+                                    >
+                                        <small
+                                            x-text="topic"
+                                            class="whitespace-nowrap border border-zinc-100 text-zinc-100 rounded-3xl px-2 py-1"
+                                        ></small>
+                                    </template>
+                                </div>
                             </div>
                         </div>
-                        <div class="space-y-2 ml-2">
-                            <p x-text="project.title" class="text-zinc-500 uppercase font-medium!"></p>
-                            <p x-text="project.title" class="h3 dark:invert"></p>
-                        </div>
-                    </div>
+                    </template>
                 </template>
+            </div>
+            <div class="flex justify-center">
+                <a
+                    target="_blank"
+                    rel="noopener nofollow noreferrer"
+                    class="button button-outline"
+                    href="https://github.com"
+                    aria-label="Check out my github profile"
+                >
+                    My GitHub
+                    <i class="bi bi-arrow-right-short"></i>
+                </a>
             </div>
         </div>
 
         <!-- SERVICES -->
-        <div id="services" class="flex flex-col gap-8">
-            <p class="text-zinc-500 uppercase font-medium!">SERVICES</p>
-            <div x-data class="space-y-8">
-                <template x-for="(service, index) in $store.data.services" :key="service.title + index">
-                    <div x-data="expanded" class="space-y-2 border-b border-zinc-200 pb-8 dark:invert">
-                        <div @click="toggleExpanded" class="cursor-pointer flex items-center justify-between gap-8">
-                            <p x-text="service.title" class="h3"></p>
-                            <i :style="{transform: expanded && 'rotate(45deg)'}"
-                                class="h3 transition-all duration-400 bi bi-arrow-right-short"></i>
+        <div
+            id="services"
+            class="flex flex-col gap-8"
+        >
+            <p class="text-zinc-600! uppercase">
+                SERVICES
+            </p>
+            <div
+                x-data
+                class="space-y-8"
+            >
+                <template
+                    x-for="(service, index) in $store.data.services"
+                    :key="service.title + index"
+                >
+                    <div
+                        x-data="show"
+                        class="space-y-2 border-b border-zinc-200 pb-8 "
+                    >
+                        <div
+                            @click="toggle"
+                            class="cursor-pointer flex items-center justify-between gap-8"
+                        >
+                            <p
+                                x-text="service.title"
+                                class="font-2xl"
+                            >
+                            </p>
+                            <i
+                                :style="{ transform: state && 'rotate(45deg)' }"
+                                class="font-2xl transition-all duration-400 bi bi-arrow-right-short"
+                            ></i>
                         </div>
-                        <div x-show="expanded" x-init="index === 0 && toggleExpanded" x-collapse
-                            class="overflow-hidden max-w-lg">
-                            <p x-text="service.description"></p>
+                        <div
+                            x-show="state"
+                            x-init="index === 0 && toggle"
+                            x-collapse
+                            class="overflow-hidden max-w-lg"
+                        >
+                            <p x-text="service.description">
+                            </p>
                         </div>
                     </div>
                 </template>
@@ -153,60 +366,172 @@
         </div>
 
         <!-- STORY -->
-        <div id="about" class="grid sm:grid-cols-3 gap-8">
-            <div class="sm:col-span-1">
-                <p class="text-zinc-500 uppercase font-medium!">My story</p>
+        <div
+            id="about"
+            class="space-y-8"
+        >
+            <div class="flex flex-wrap gap-8">
+                <div class="grow basis-3xs">
+                    <p class="text-zinc-600! uppercase">
+                        My
+                        story
+                    </p>
+                </div>
+                <div class="grow basis-xs space-y-8">
+                    <p class="font-2xl">
+                        Nice to meet you.
+                    </p>
+                    <div class="space-y-4">
+                        <p class="font-lg">So who am I?</p>
+                        <p> Lorem ipsum dolor sit amet consectetur, adipisicing
+                            elit.Nemo aliquam consequatur voluptatem earum eos
+                            esse
+                            nobis perspiciatis suscipit voluptates sint quam
+                            possimus
+                            praesentium vero dolor beatae, temporibus obcaecati
+                            enim fugit.
+                        </p>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="font-lg">How did I become a Developer?</p>
+                        <p> Sed ut perspiciatis unde omnis iste natus error sit
+                            voluptatem accusantium doloremque laudantium, totam
+                            rem aperiam eaque ipsa, quae ab illo inventore
+                            veritatis et quasi architecto beatae vitae dicta
+                            sunt, explicabo. Nemo enim ipsam voluptatem, quia
+                            voluptas sit, aspernatur aut odit aut fugit, sed
+                            quia consequuntur magni dolores eos, qui ratione
+                            voluptatem sequi nesciunt, neque porro quisquam est,
+                            qui dolorem ipsum, quia dolor sit, amet,
+                            consectetur, adipisci velit, sed quia non numquam
+                            eius modi tempora incidunt, ut labore et dolore
+                            magnam aliquam quaerat voluptatem.
+                        </p>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="font-lg">A little about my passions.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Fugiat quia reiciendis sapiente error
+                            molestias aliquid placeat eaque expedita, ratione,
+                            a, necessitatibus ipsum tempora iure mollitia
+                            accusantium animi. Dicta, laboriosam eaque.</p>
+                    </div>
+                </div>
             </div>
-            <div class="sm:col-span-2 space-y-2 dark:invert">
-                <p class="h3">This is how I became a Front End developer.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi illum quas, nihil voluptates ab
-                    veritatis eligendi qui laboriosam esse sequi eos ipsa corporis, beatae tempora voluptate, eius
-                    veniam dolore blanditiis.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi qui consectetur nisi a corrupti
-                    voluptate fugiat fugit inventore maxime est, asperiores in voluptatem alias reiciendis. Esse omnis
-                    dolor mollitia pariatur!</p>
+            <div class="flex flex-wrap gap-2">
+                <div
+                    x-data="show"
+                    x-intersect.once="toggle"
+                    class="aspect-3/2 grow basis-md rounded-3xl overflow-hidden bg-zinc-200"
+                >
+                    <img
+                        x-show="state"
+                        :src="state && 'https://images.unsplash.com/photo-1739130524827-5fa364835c41?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'"
+                        alt="image"
+                        loading="lazy"
+                        class="w-full h-full object-center object-cover"
+                    >
+                </div>
+                <div
+                    x-data="show"
+                    x-intersect.once="toggle"
+                    class="aspect-2/3 grow basis-3xs rounded-3xl overflow-hidden bg-zinc-200"
+                >
+                    <img
+                        x-show="state"
+                        :src="state && 'https://images.unsplash.com/photo-1740202931700-a1fa9edc43ac?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'"
+                        alt="image"
+                        loading="lazy"
+                        class="w-full h-full object-center object-cover"
+                    >
+                </div>
+                <div
+                    x-data="show"
+                    x-intersect.once="toggle"
+                    class="aspect-3/2 grow basis-sm rounded-3xl overflow-hidden bg-zinc-200"
+                >
+                    <img
+                        x-show="state"
+                        :src="state && 'https://images.unsplash.com/photo-1542401886-65d6c61db217?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'"
+                        alt="image"
+                        loading="lazy"
+                        class="w-full h-full object-center object-cover"
+                    >
+                </div>
+                <div
+                    x-data="show"
+                    x-intersect.once="toggle"
+                    class="aspect-3/2 grow basis-lg rounded-3xl overflow-hidden bg-zinc-200"
+                >
+                    <img
+                        x-show="state"
+                        :src="state && 'https://images.unsplash.com/photo-1741913620197-7295e36ecafc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'"
+                        alt="image"
+                        loading="lazy"
+                        class="w-full h-full object-center object-cover"
+                    >
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- DIVIDER -->
-    <div class="border-b border-zinc-200 w-full dark:invert"></div>
-
     <!-- FOOTER -->
-    <footer id="contact" class="flex items-center justify-center w-full h-fit p-8">
-        <div class="w-full max-w-6xl flex flex-col justify-between gap-56">
+    <footer
+        id="contact"
+        class="flex items-center justify-center w-full h-fit"
+    >
+        <div class="w-full max-w-6xl flex flex-col justify-between gap-56 p-8">
             <div class="flex flex-wrap justify-between gap-8">
                 <div class="flex flex-col gap-8 basis-full sm:basis-[64%]">
-                    <p class="text-zinc-500 uppercase">Contact</p>
-                    <p class="h2 dark:invert">Let's work on your future</p>
-                    <a href="mailto:" class="button button-full dark:invert">
+                    <p class="text-zinc-600! uppercase">
+                        Let's talk
+                    </p>
+                    <p class="font-2xl">Time to work on your future.</p>
+                    <a
+                        href="mailto:"
+                        class="button button-full "
+                    >
                         hello@dev.com
                         <i class="bi bi-arrow-right-short"></i>
                     </a>
                 </div>
-                <div class="flex sm:justify-between gap-8 basis-full sm:basis-[28%]">
-                    <div x-data class="space-y-2">
-                        <p class="text-zinc-500 uppercase">Sitemap</p>
-                        <div class="dark:invert">
+                <div
+                    class="flex sm:justify-between gap-8 basis-full sm:basis-[28%]">
+                    <div
+                        x-data
+                        class="space-y-2"
+                    >
+                        <p class="text-zinc-600! uppercase">Sitemap</p>
+                        <div>
                             <template x-for="link in $store.data.links">
                                 <div class="group w-fit">
-                                    <a x-text="link.label" :href="link.href"></a>
+                                    <a
+                                        x-text="link.label"
+                                        :href="link.href"
+                                    ></a>
                                     <div
-                                        class="w-0 group-hover:w-full transition-all duration-400 border-b border-black">
+                                        class="w-0 group-hover:w-full transition-all duration-400 border-b border-zinc-900">
                                     </div>
                                 </div>
                             </template>
                         </div>
                     </div>
-                    <div x-data class="space-y-2">
-                        <p class="text-zinc-500 uppercase">Contact</p>
-                        <div class="dark:invert">
+                    <div
+                        x-data
+                        class="space-y-2"
+                    >
+                        <p class="text-zinc-600! uppercase">Contact</p>
+                        <div>
                             <template x-for="social in $store.data.socials">
                                 <div class="group w-fit">
-                                    <a x-text="social.label" target="_blank" rel="noopener noreferrer nofollow"
-                                        :href="social.href"></a>
+                                    <a
+                                        x-text="social.label"
+                                        :href="social.href"
+                                        target="_blank"
+                                        rel="noopener noreferrer nofollow"
+                                    ></a>
                                     <div
-                                        class="w-0 group-hover:w-full transition-all duration-400 border-b border-black">
+                                        class="w-0 group-hover:w-full transition-all duration-400 border-b border-zinc-900">
                                     </div>
                                 </div>
                             </template>
@@ -215,10 +540,22 @@
                 </div>
             </div>
 
-            <p class="text-zinc-500">Developed with ❤️ by @maelacudini</p>
+            <p class="text-zinc-600!">
+                Developed with ❤️ by
+                <a
+                    href="https://github.com/maelacudini"
+                    rel="noopener nofollow noreferrer"
+                    target="_blank"
+                >
+                    @maelacudini
+                </a>
+            </p>
         </div>
     </footer>
 
+    <!-- LENIS -->
+    <script src="https://unpkg.com/lenis@1.2.3/dist/lenis.min.js"></script>    
+    <!-- CUSTOM SCRIPTS --> 
     <script src="./scripts/data.js"></script>
     <script src="./scripts/script.js"></script>
 </body>
